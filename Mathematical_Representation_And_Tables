@@ -1,0 +1,122 @@
+Algorithm 1: User Model Construction
+Input:
+	Orders DataFrame
+	Features list
+Output:
+	Term Frequency (TF) Distribution for each feature
+	Weight (W) for each feature
+Detailed Steps:
+	Iterate through each order in the Orders DataFrame.
+	For each order, calculate the term frequency (TF) for each feature.
+	Calculate the weight (W) for each feature based on the TF distribution.
+Mathematical Representation:
+Let:
+	D be the TF distribution dictionary for each feature.
+	W be the weight dictionary for each feature.
+The TF distribution for each feature can be represented as:
+<!--D={f1:{t_(f1,) 1:n_(f1,) 1,t_(f1,) 2:n_(f1,) 2,…},f2:{ t_(f2,) 1:n_(f2,) 1,t_(f2,) 2:n_(f2,) 2,…}-->
+The weight for each feature can be calculated as:
+W={f1:log⁡(N)-(∑_(i=1)^m▒〖n_f1,i〗)/m,f2:log⁡(N)-(∑_(i=1)^m▒〖n_f2,i〗)/m,….}
+Where:
+	N is the total number of unique values for the feature.
+	m is the total number of orders.
+Example Table:
+	    |Feature|      Time Frequency Distribution	    |Weight (W)|
+	    |-------|---------------------------------------|----------|
+	    |Airline|{‘Airline A’: 50, ‘Airline B’: 30, ...}|   0.234  | 
+	    | Class |{‘Economy’: 80, ‘Business’: 20, ...}   |   0.378  | 
+	    | Price |{100: 25, 200: 35, ...}	0.453         | 	0.453  |
+
+
+Algorithm 2: Flight Ticket Recommendation
+Input:
+	Orders DataFrame
+	Features list
+	Candidate tickets DataFrame
+Output:
+	Recommended tickets with their scores
+Detailed Steps:
+	Construct the user model using Algorithm 1.
+	Calculate the recommendation score for each candidate ticket based on the user model.
+	Sort the candidate tickets based on their recommendation scores.
+Mathematical Representation:
+Let:
+	Gt be the recommendation score for ticket. 
+	D be the TF distribution dictionary for each feature.
+	W be the weight dictionary for each feature.
+The recommendation score for ticket calculated as:
+G_t=∑_(i=1)^n▒〖(D_fi (t_fi))/(∑_(j=1)^m▒〖D_fi (t_(fi,) j)〗)×W_fi 〗
+Where:
+	n is the number of features.
+	m is the total number of unique values of the features.
+			|Ticket ID|Recommendation Score|
+			|---------|--------------------|
+			|    1	  |		     0.874	     |
+			|    2	  |		     0.765  	   |
+			|    3	  |		     0.653	     |
+			|    4	  |	       0.521	     |
+
+
+Algorithm 3: Route Partition and Distribution Extraction
+This algorithm partitions the dataset based on routes and extracts the distribution of features for each route.
+Detailed Explanation:
+	Route Partitioning:
+	The algorithm filters the dataset based on each unique route, splitting it into separate datasets for each route.
+	Feature Distribution Extraction:
+	For each route, the algorithm extracts the distribution of features (e.g., Airline, Class, Price) from the corresponding dataset.
+	The distribution represents the frequency of each feature value within the dataset for the route.
+Mathematical Representation:
+Let's denote D as the dictionary containing feature distributions for each route. The distribution of features for route r is represented as Dr.
+Example Table:
+		|    Route   |           Feature Distribution	       |
+		|------------|---------------------------------------|
+		|Delhi-Mumbai|{‘Airline A’: 50, ‘Airline B’: 30, ...}|
+		|Mumbai-Delhi|{‘Airline X’: 40, ‘Airline Y’: 25, ...}|
+		|............|.......................................|
+
+
+Algorithm 4: User Model Enhancement Based on Social Relationships
+Input:
+	Historical orders for the route (O)
+	Set of ticket features (F)
+	Overall feature distribution (D0)
+	Optimal route (R0)
+	Dataset
+Output:
+	Enhanced user model
+Detailed Steps:
+	Retrieve related users based on order-shared and flight-shared relationships for the current user.
+	Determine the optimal route for user model enhancement.
+	Calculate the enhanced user model based on the closeness of related users and the optimal route.
+Mathematical Representation:
+Let:
+D be the TF distribution dictionary for each feature.
+M be the enhanced model dictionary.
+M={f1:{t_(f1,) 1:v_(f1,) 1,t_(f1,) 2:v_(f1,) 2,…},f2:{t_(f2,) 1:v_(f2,) 1,t_(f2,) 2:v_(f2,) 2,…},…}
+Example Table:
+		|User ID|       Related Users	   |
+		|-------|------------------------|
+		|	1	|  [234567, 345678, 456789]  |
+		|	2	|    [123456, 345678]	       |
+		|	3	|  [123456, 234567, 456789]  |
+
+
+Algorithm 5: Combine Explicit and Latent Factors for Ticket Recommendation
+Input:
+	Explicit factors (Dmix)
+	Latent factors (D0_rb)
+	Weight for recommended route (weight_recommended)
+	Weight for optimal route (weight_optimal)
+Output:
+	Combined model
+Detailed Steps:
+	Combine the explicit and latent factors linearly based on the weights for the recommended and optimal routes.
+Mathematical Representation:
+Let:
+Dmix be the explicit factors for the recommended route.
+D0_rb be the latent factors for the optimal route.
+Ωrecommended be the weight for the recommended route.
+Ωoptimal be the weight for the optimal route.
+M be the combined model dictionary.
+The combined model can be represented as:
+M={f1:{t_(f1,) 1:v_(f1,) 1,t_(f1,) 2:v_(f1,) 2,…},f2:{t_(f2,) 1:v_(f2,) 1,t_(f2,) 2:v_(f2,) 2,…},…}
