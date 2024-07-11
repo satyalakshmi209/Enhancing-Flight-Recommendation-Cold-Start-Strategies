@@ -1,0 +1,87 @@
+Algorithm 1: User Model Construction
+Input: O: historical orders of the route,
+F: the set of ticket features.
+Output: User ticket choice information model D.
+1: Function ModelConstruction{O,F}
+2: D ← φ;
+3: for t ∈ O do
+4:     for f ∈ F do
+5:         D[f][tf]+ = 1;
+6:     end for
+7: end for
+8: W ← φ;
+9: for f ∈ F do
+10:    W[f] ← P ln |f| - S(f) / (ln |f| - S(f));
+11: end for
+12: return D, W.
+13: End Function
+ 
+Algorithm 2: Flight Ticket Recommendation Algorithm
+Input: O: historical orders of the route,
+F: the feature set of ticket,
+C: the candidate ticket list.
+Output: A list of ranked tickets R.
+1: D, W ← ModelConstruction(O,F);
+2: R ← φ;
+3: for t ∈ C do
+4:     Gt ← 0;
+5:     for f ∈ F do
+6:         Gt+ = D[f][tf] Sum(D[f]) × W[f];
+7:     end for
+8:     Append Gt to R;
+9: end for
+10: Sort R by descending;
+11: return R.
+ 
+Algorithm 3: User Model Transfer from Similar Routes
+Input: O: the historical orders of all the routes,
+F: the set of ticket features,
+ra: the recommended route,
+M: the overall feature distribution over different routes.
+Output: The Enhanced User Model Dmix.
+1: P ← routePartition(O, ra);
+2: for r ∈ P do
+3:     D[r] ← extractDistribution(Or, F);
+4:     W[r] ← getWeight(Or, F);
+5: end for
+6: rb ← getOptimalRoute(P)
+7: D0[rb] ← D[rb]/M[rb]
+8: Dmix = Normalize(|Ora| × D[ra] + |Orb| × D0[rb])
+9: return Dmix.
+
+Algorithm 4: User Model Enhancement Based on Social Relationships
+Input: O: the historical orders of the route,
+F: the set of ticket features.
+Output: social relationship enhanced model Damp.
+1: U ← getRelatedUsers(ua);
+2: rank_list ← φ;
+3: for u ∈ U do
+4:     rank_list.append(Rela(ua,u));
+5: end for
+6: ub ← Max(rank_list);
+7: rb ← getOptimalRoute(ub);
+8: D0[rb] ← D[rb]/M[rb];
+9: Damp = Normalize(D[ra] + D0[rb]);
+10: return Damp.
+ 
+Algorithm 5: Ticket Recommendation by Combining Explicit and Latent Factors
+Input: O: the historical orders of the route,
+F: the set of ticket features,
+C: the search result list.
+Output: A ranked tickets list R.
+1: Wu ← 0;
+2: Mti ← 0;
+3: for o ∈ O do
+4:     Co ← getSearchResult(o);
+5:     for to ∈ Co.sample() do
+6:         Wu = Wu + α(∂logP(ti,tj)/Wu - λ × Wu);
+7:         Mti = Mti + α(∂logP(ti,tj)/Mti - λ × Mti);
+8:     end for
+9:     If reach iteration limit, break;
+10: end for
+11: for t ∈ C do
+12:     Rt = R(KTu × Ft) + R(φTu × θt);
+13:     Append Rt to R;
+14: end for
+15: Sort R by ascending;
+16: return R.
