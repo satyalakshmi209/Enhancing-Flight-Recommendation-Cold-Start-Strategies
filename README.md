@@ -77,3 +77,5 @@ The Flight Ticket Recommendation System represents a sophisticated application o
 This README provides a detailed overview of the Flight Ticket Recommendation System, covering its components, algorithms, key concepts, and usage instructions. It aims to serve as a comprehensive guide for developers, stakeholders, and users interested in understanding and implementing this innovative solution in the domain of travel and tourism.
 
 This extended version incorporates specific details about your interdisciplinary project, including team members, project overview, and its educational context at Vignan University.
+
+For any quaries you can reachout throught mail: jayanthaddepalli03@gmail.com
